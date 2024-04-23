@@ -254,6 +254,11 @@ impl OpenVpnCommand {
             args.extend(["--mark", &mark.to_string()].iter().map(OsString::from));
         }
 
+        #[cfg(target_os = "linux")]
+        if !self.tunnel_options.set_route_noexec.unwrap(){
+            args.retain(|x| *x != OsString::from("--route-noexec"));
+        }
+
         args
     }
 
